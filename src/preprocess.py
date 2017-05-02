@@ -1,6 +1,5 @@
 import re
 import csv
-
 #start getStopWordList
 def loadStopWordList():
     fp =  open("../resource/stopWords.txt",'r')
@@ -15,7 +14,6 @@ def loadStopWordList():
         line = fp.readline()
     fp.close()
     return stopWords
-#end
 
 def removeStopWords(tweet,stopWords):
     result=''

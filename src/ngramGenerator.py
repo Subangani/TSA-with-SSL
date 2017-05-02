@@ -1,19 +1,15 @@
-
 import nltk
 import operator
-
 # extract k most frequent words from the sorted list
 def mostFreqList(l,k):
     m=[w[0] for w in l[0:k]]
     return m
-
 #get all the words from sorted list
 def getSortedWordCount(filename,gram):
     d = get_word_features(ngramText(filename,gram))
     l = sortList(d)
     print l
     return l
-
 # from a list of words returns a dictionary with word, freq as key, value
 def get_word_features(wordlist):
     wordlist = nltk.FreqDist(wordlist)
@@ -21,7 +17,6 @@ def get_word_features(wordlist):
     for k in wordlist.keys():
         result.append([k,wordlist[k]])
     return result
-
 # generate vector of unigrams in text file
 def ngramText(filename,gram):
     textWords=[]
@@ -39,7 +34,7 @@ def ngram(text,grams):
     model=[]
     count=0
     for token in text[:len(text)-grams+1]:
-       model.append(text[count:count+grams])
+       model.append(tuple(text[count:count+grams]))
        count=count+1
     return model
 
