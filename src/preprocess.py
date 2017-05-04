@@ -24,6 +24,30 @@ def removeStopWords(tweet,stopWords):
             result=result+w+' '
     return result
 
+def negate(tweets):
+    negationList = ["never", "no", "nothing", "nowhere", "noone", "none", "not", "havent", "hasnt", "hadnt", "cant",
+                    "couldnt", "shouldnt", "wont", "wouldnt", "dont", "doesnt", "didnt", "isnt", "arent", "aint","haven't",
+                    "hasn't", "hadn't", "can't","couldn't", "shouldn't", "wouldn't", "don't", "doesn't", "didn't", "isn't",
+                    "aren't", "ain't"]
+    puncuationMarks = [".", ":", ";", "!", "?"]
+    for i in range(len(tweets)):
+        if tweets[i] in negationList:
+            print "yes we found u killer ................... " + tweets[i]
+            j = i+1
+            #counter=0
+            while j < len(tweets):
+                if (tweets[j][-1] not in puncuationMarks):
+                    tweets[j] = tweets[j] + "_NEG"
+                    j = j +1
+                    #counter=1
+                else:
+                    break
+            i = j
+            #if (counter==1):
+             #   tweets[i] = tweets[i] + "_NEG"
+            #print tweets
+    return tweets
+
 
 
 #start loading slangs list from file
@@ -73,6 +97,7 @@ def preProcessTweet(tweet): # arg tweet, stopWords list and internet slangs dict
     processedTweet=replaceTwoOrMore(tweet) # replace multi-occurences by two
     slangs = loadInternetSlangsList()
     words=replaceSlangs(processedTweet,slangs).split()
+    negate(words)
     stopWords = loadStopWordList()
     preprocessedtweet = removeStopWords(words,stopWords)
     return preprocessedtweet
