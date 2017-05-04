@@ -1,5 +1,6 @@
 import re
 import csv
+import postag
 #start getStopWordList
 def loadStopWordList():
     fp =  open("../resource/stopWords.txt",'r')
@@ -74,9 +75,15 @@ def preProcessTweet(tweet): # arg tweet, stopWords list and internet slangs dict
     slangs = loadInternetSlangsList()
     words=replaceSlangs(processedTweet,slangs).split()
     stopWords = loadStopWordList()
+
     preprocessedtweet = removeStopWords(words,stopWords)
-    return preprocessedtweet
+    print preprocessedtweet
+    postaggedTweet = postag.posTag(preprocessedtweet)
+    print postaggedTweet
+    return postaggedTweet
 #end
+
+
 
 def process(filename, preprocessedFilename):
     f0=open(filename,"r")
@@ -85,6 +92,7 @@ def process(filename, preprocessedFilename):
     for row in reader:
         a = row[2]
         tweet= preProcessTweet(a)
+        #print tweet
         f1.write(tweet + '\n')
     f0.close()
     f1.close()
@@ -94,7 +102,7 @@ positiveFilename= "../dataset/positive.csv"
 positivePreprocessedFilename = "../dataset/positiveProcessed.txt"
 print "preprocessing positive tweets"
 process(positiveFilename,positivePreprocessedFilename)
-
+"""
 #pre-processing negative twits
 negativeFilename= "../dataset/negative.csv"
 negativePreprocessedFilename = "../dataset/negativeProcessed.txt"
@@ -108,4 +116,4 @@ print "preprocessing neutral tweets"
 process(neutralFilename,neutralPreprocessedFilename)
 
 
-
+"""

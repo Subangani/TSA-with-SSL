@@ -23,7 +23,7 @@ def getScore(tweet,posW,negW):
 				score +=1;
     return score;
 	
-tweet="hi there i am worse_NEG whatsapp";
+tweet="hi there i am too bad bad";
 pos=loadWords("../resource/positive.txt");
 neg=loadWords("../resource/negative.txt");
 print getScore(tweet,pos,neg);
