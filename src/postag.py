@@ -1,6 +1,6 @@
 from __future__ import division
 import nltk  # for pos tagging
-
+import subprocess
 
 def loadSentiSimple(filename):
     output={}
@@ -137,7 +137,12 @@ def hashTest(word):
     return word[0]=='#'
 
 
-sentiWord=loadSentiSimple("../resource/SentiWordNet.txt");
-tweets=open("../dataset/positiveProcessed.txt","r");
-for tweet in tweets:
-    print posPolarity(tweet,sentiWord);
+
+def arkTag():
+    subprocess.call("./runTagger.sh ../dataset/positiveProcessed.txt")
+
+arkTag();
+# sentiWord=loadSentiSimple("../resource/SentiWordNet.txt");
+# tweets=open("../dataset/positiveProcessed.txt","r");
+# for tweet in tweets:
+#     print posPolarity(tweet,sentiWord);
