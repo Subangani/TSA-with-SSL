@@ -1,6 +1,6 @@
 import re
 import csv
-import postag
+
 #start getStopWordList
 def loadStopWordList():
     fp =  open("../resource/stopWords.txt",'r')
