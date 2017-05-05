@@ -27,30 +27,28 @@ def removeStopWords(tweet,stopWords):
             result=result+w+' '
     return result
 
-def negate(tweets):
-    negationList = ["never", "no", "nothing", "nowhere", "noone", "none", "not", "havent", "hasnt", "hadnt", "cant",
-                    "couldnt", "shouldnt", "wont", "wouldnt", "dont", "doesnt", "didnt", "isnt", "arent", "aint","haven't",
-                    "hasn't", "hadn't", "can't","couldn't", "shouldn't", "wouldn't", "don't", "doesn't", "didn't", "isn't",
-                    "aren't", "ain't"]
+def negate(tweetWordList):
+    fn =open("../resource/negation.txt",'r')
+    line = fn.readline()
+    negationList=[]
+    while line:
+        negationList.append(line[:-1]);
+        line = fn.readline()
+    fn.close();
     puncuationMarks = [".", ":", ";", "!", "?"]
-    for i in range(len(tweets)):
-        if tweets[i] in negationList:
-            #print "yes we found u killer ................... " + tweets[i]
-            j = i+1
-            #counter=0
-            while j < len(tweets):
-                if (tweets[j][-1] not in puncuationMarks):
-                    tweets[j] = tweets[j] + "_NEG"
-                    j = j +1
-                    #counter=1
-                else:
-                    break
-            i = j
-            #if (counter==1):
-             #   tweets[i] = tweets[i] + "_NEG"
-            #print tweets
-    return tweets
 
+    for i in range(len(tweetWordList)):
+        if tweetWordList[i] in negationList:
+            j = i + 1
+            while j < len(tweetWordList):
+                if (tweetWordList[j][-1] not in puncuationMarks):
+                    tweetWordList[j] = tweetWordList[j] + "_NEG"
+                    j = j + 1
+                elif(tweetWordList[j][-1] in puncuationMarks):
+                    tweetWordList[j] = tweetWordList[j][:-1] + "_NEG"
+                    break;
+            i = j
+        return tweetWordList
 
 
 #start loading slangs list from file
@@ -131,6 +129,7 @@ def process(filename, positiveUnigram,positiveBigram,positiveTrigram):
 
     f0.close()
     f1.close()
+
     f2.close()
     f3.close()
 
@@ -157,3 +156,4 @@ neutralPreprocessedFilename = "../dataset/neutralProcessed.txt"
 print "preprocessing neutral tweets"
 process(neutralFilename,neutralPreprocessedFilename)
 """
+
