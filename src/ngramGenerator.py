@@ -4,12 +4,13 @@ import operator
 def mostFreqList(l,k):
     m=[w[0] for w in l[0:k]]
     return m
+
 #get all the words from sorted list
-def getSortedWordCount(filename,gram):
-    d = get_word_features(ngramText(filename,gram))
+def getSortedWordCount(tweet,gram):
+    d = get_word_features(ngramText(tweet,gram))
     l = sortList(d)
-    print l
     return l
+
 # from a list of words returns a dictionary with word, freq as key, value
 def get_word_features(wordlist):
     wordlist = nltk.FreqDist(wordlist)
@@ -17,20 +18,15 @@ def get_word_features(wordlist):
     for k in wordlist.keys():
         result.append([k,wordlist[k]])
     return result
+
 # generate vector of unigrams in text file
-def ngramText(filename,gram):
+def ngramText(tweet,gram):
     textWords=[]
-    f=open(filename,"r")
-    line=f.readline()
-    while line:
-        textWords.extend(ngram(line,gram))
-        line=f.readline()
-    f.close()
-    print textWords
+    textWords.extend(ngram(tweet,gram))
+   # print textWords
     return textWords
 
 def ngram(text,grams):
-    text = text.split(" ")
     model=[]
     count=0
     for token in text[:len(text)-grams+1]:
@@ -45,6 +41,6 @@ positivePreprocessed = "../dataset/positiveProcessed.txt"
 negativePreprocessed = "../dataset/positiveProcessed.txt"
 neutralPreprocessed = "../dataset/positiveProcessed.txt"
 
-getSortedWordCount(positivePreprocessed,1)
+#getSortedWordCount(positivePreprocessed,1)
 #getSortedWordCount(positivePreprocessed,2)
 #getSortedWordCount(positivePreprocessed,3)
