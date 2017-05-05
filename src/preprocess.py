@@ -132,5 +132,3 @@ neutralPreprocessedFilename = "../dataset/neutralProcessed.txt"
 print "preprocessing neutral tweets"
 process(neutralFilename,neutralPreprocessedFilename)
 
-
-
