@@ -1,5 +1,8 @@
 import re
 import csv
+import postag
+import ngramGenerator
+import nltk
 #start getStopWordList
 def loadStopWordList():
     fp =  open("../resource/stopWords.txt",'r')
@@ -32,7 +35,7 @@ def negate(tweets):
     puncuationMarks = [".", ":", ";", "!", "?"]
     for i in range(len(tweets)):
         if tweets[i] in negationList:
-            print "yes we found u killer ................... " + tweets[i]
+            #print "yes we found u killer ................... " + tweets[i]
             j = i+1
             #counter=0
             while j < len(tweets):
@@ -97,29 +100,51 @@ def preProcessTweet(tweet): # arg tweet, stopWords list and internet slangs dict
     processedTweet=replaceTwoOrMore(tweet) # replace multi-occurences by two
     slangs = loadInternetSlangsList()
     words=replaceSlangs(processedTweet,slangs).split()
-    negate(words)
+    negatedTweets=negate(words)
     stopWords = loadStopWordList()
-    preprocessedtweet = removeStopWords(words,stopWords)
-    return preprocessedtweet
+    preprocessedtweet = removeStopWords(negatedTweets,stopWords)
+   # print preprocessedtweet
+    postaggedTweet = postag.posTag(preprocessedtweet)
+    #print postaggedTweet
+    return postaggedTweet
+
 #end
 
-def process(filename, preprocessedFilename):
+def process(filename, positiveUnigram,positiveBigram,positiveTrigram):
     f0=open(filename,"r")
-    f1 = open(preprocessedFilename,"w")
+    f1 = open(positiveUnigram,"w")
+    f2 = open(positiveBigram, "w")
+    f3 = open(positiveTrigram, "w")
     reader = csv.reader(f0)
     for row in reader:
         a = row[2]
         tweet= preProcessTweet(a)
-        f1.write(tweet + '\n')
+        tweetUnigram = ngramGenerator.getSortedWordCount(tweet,1)
+        for i in range(len(tweetUnigram)):
+            f1.write(''.join('%s ' %  tweetUnigram[i][0]) +"\n")
+        tweetBigram = ngramGenerator.getSortedWordCount(tweet,2)
+        for i in range(len(tweetBigram)):
+            f2.write(''.join('%s ' % str(tweetBigram[i][0]))+ "\n")
+        tweetTrigram = ngramGenerator.getSortedWordCount(tweet,3)
+        for i in range(len(tweetTrigram)):
+            f3.write(''.join('%s ' %  str(tweetTrigram[i][0])) +"\n")
+
     f0.close()
     f1.close()
+    f2.close()
+    f3.close()
 
 #pre-processing positive twits
 positiveFilename= "../dataset/positive.csv"
-positivePreprocessedFilename = "../dataset/positiveProcessed.txt"
+positiveUnigramfile = "../dataset/positiveUnigram.txt"
+positiveBigramfile = "../dataset/positiveBigram.txt"
+positiveTrigramfile = "../dataset/positiveTrigram.txt"
 print "preprocessing positive tweets"
-process(positiveFilename,positivePreprocessedFilename)
+process(positiveFilename,positiveUnigramfile,positiveBigramfile,positiveTrigramfile)
 
+
+
+"""
 #pre-processing negative twits
 negativeFilename= "../dataset/negative.csv"
 negativePreprocessedFilename = "../dataset/negativeProcessed.txt"
@@ -131,4 +156,4 @@ neutralFilename= "../dataset/neutral.csv"
 neutralPreprocessedFilename = "../dataset/neutralProcessed.txt"
 print "preprocessing neutral tweets"
 process(neutralFilename,neutralPreprocessedFilename)
-
+"""
